@@ -31,6 +31,8 @@ public class Principal {
         var opcion = -1;
         while (opcion != 0) {
             var menu = """
+                    \n----------------
+                    Elija la opción a través de su número:
                     1 - Buscar libro por título
                     2 - Lista libros registrados
                     3 - Lista autores registrados
