@@ -5,6 +5,7 @@ import com.practica.api_libros.model.Autor;
 import com.practica.api_libros.model.DatosAutor;
 import com.practica.api_libros.model.DatosLibro;
 import com.practica.api_libros.model.Libro;
+import com.practica.api_libros.repository.AutorRepository;
 import com.practica.api_libros.repository.LibroRepository;
 import com.practica.api_libros.service.ConsumoAPI;
 import com.practica.api_libros.service.ConvierteDatos;
@@ -20,12 +21,14 @@ public class Principal {
     private ConsumoAPI consumoAPI = new ConsumoAPI();
     private final String URL = "https://gutendex.com/books/?search=";
     private ConvierteDatos conversor = new ConvierteDatos();
-    private LibroRepository repositorio;
+    private LibroRepository librosRepositorio;
+    private AutorRepository autorRepositorio;
     private List<Libro> libros;
     private List<Autor> autores;
 
-    public Principal(LibroRepository repository) {
-        this.repositorio = repository;
+    public Principal(LibroRepository libroRepository, AutorRepository autorRepository) {
+        this.librosRepositorio = libroRepository;
+        this.autorRepositorio = autorRepository;
     }
 
     public void muestraMenu() {
@@ -73,7 +76,7 @@ public class Principal {
             var json = consumoAPI.obtenerDatos(URL + nombreLibro.replace(" ", "%20"));
             var apiResponse = conversor.obtenerDatos(json, ApiResponse.class);
             DatosLibro libro = apiResponse.results().get(0);
-            Optional<Libro> libroExistente = repositorio.findLibroByTitle(libro.titulo());
+            Optional<Libro> libroExistente = librosRepositorio.findLibroByTitle(libro.titulo());
             if (libroExistente.isPresent()) {
                 System.out.println("El libro ya existe en la base de datos y no se puede ingresar dos veces.");
                 return null;
@@ -91,28 +94,28 @@ public class Principal {
             return;
         }
         DatosAutor datosAutor = datos.autorList().get(0);
-        Optional<Autor> autorExistente = repositorio.findAutorByNombre(datosAutor.nombre());
+        Optional<Autor> autorExistente = librosRepositorio.findAutorByNombre(datosAutor.nombre());
         Autor autor;
 
         if (autorExistente.isPresent()) {
             autor = autorExistente.get();
         } else {
-            repositorio.saveAutor(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento());
-            autor = repositorio.findAutorByDetails(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento()).get();
+            librosRepositorio.saveAutor(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento());
+            autor = librosRepositorio.findAutorByDetails(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento()).get();
         }
         Libro libro = new Libro(datos);
         libro.setAutor(autor);
-        repositorio.save(libro);
+        librosRepositorio.save(libro);
         System.out.println(libro);
     }
 
     public void listarLibrosRegistrados(){
-        libros = repositorio.findAll();
+        libros = librosRepositorio.findAll();
         libros.forEach(System.out::println);
     }
 
     public void listarAutoresRegistrados(){
-        autores = repositorio.llamarAutoresRegistrados();
+        autores = autorRepositorio.findAllWithLibros();
         autores.forEach(System.out::println);
     }
 }
