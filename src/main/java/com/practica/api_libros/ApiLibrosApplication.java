@@ -15,6 +15,6 @@ public class ApiLibrosApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Principal principal = new Principal();
-		principal.prueba();
+		principal.muestraMenu();
 	}
 }
