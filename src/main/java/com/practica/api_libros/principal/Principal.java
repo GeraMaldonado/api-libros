@@ -62,6 +62,9 @@ public class Principal {
                 case 4:
                     autoresVivosAntesDeFecha();
                     break;
+                case 5:
+                    listaDeLibrosPorIdioma();
+                    break;
 
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -127,6 +130,18 @@ public class Principal {
         autores = autorRepositorio.findAllByDate(fecha);
         autores.forEach(System.out::println);
 
+    }
+    public void listaDeLibrosPorIdioma(){
+        var idiomasTexto = """
+                es - Español
+                en - Inglés
+                fr - Francés
+                pt - Portugés
+                """;
+        System.out.println("Ingrese el idioma para buscar los libros: \n"+idiomasTexto);
+        var idioma = escaner.nextLine();
+        libros = librosRepositorio.librosPorIdioima(idioma);
+        libros.forEach(System.out::println);
     }
 }
 
