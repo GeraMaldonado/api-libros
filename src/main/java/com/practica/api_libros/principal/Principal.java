@@ -9,6 +9,7 @@ import com.practica.api_libros.repository.LibroRepository;
 import com.practica.api_libros.service.ConsumoAPI;
 import com.practica.api_libros.service.ConvierteDatos;
 import org.springframework.stereotype.Component;
+
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -55,39 +56,43 @@ public class Principal {
     }
 
     private DatosLibro getDatosLibro() {
-        System.out.println("Escribe el título del libro que deseas buscar");
-        var nombreLibro = escaner.nextLine();
-        var json = consumoAPI.obtenerDatos(URL + nombreLibro.replace(" ", "%20"));
-        var apiResponse = conversor.obtenerDatos(json, ApiResponse.class);
-        if(apiResponse.results().isEmpty()){
+        try {
+            System.out.println("Escribe el título del libro que deseas buscar");
+            var nombreLibro = escaner.nextLine();
+            var json = consumoAPI.obtenerDatos(URL + nombreLibro.replace(" ", "%20"));
+            var apiResponse = conversor.obtenerDatos(json, ApiResponse.class);
+            DatosLibro libro = apiResponse.results().get(0);
+            Optional<Libro> libroExistente = repositorio.findLibroByTitle(libro.titulo());
+            if (libroExistente.isPresent()) {
+                System.out.println("El libro ya existe en la base de datos y no se puede ingresar dos veces.");
+                return null;
+            }
+            return libro;
+        }catch (IndexOutOfBoundsException e){
             System.out.println("Libro no encontrado");
-            muestraMenu();
-        };
-        DatosLibro libro = apiResponse.results().get(0);
-        return libro;
+            return null;
+        }
     }
 
     private void buscarLibroWeb() {
         DatosLibro datos = getDatosLibro();
-        if (datos != null) {
-            DatosAutor datosAutor = datos.autorList().get(0);
-
-            Optional<Autor> autorExistente = repositorio.findAutorByNombre(datosAutor.nombre());
-            Autor autor;
-
-            if (autorExistente.isPresent()) {
-                autor = autorExistente.get();
-            } else {
-                repositorio.saveAutor(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento());
-                autor = repositorio.findAutorByNombre(datosAutor.nombre()).get();
-            }
-
-            Libro libro = new Libro(datos);
-            libro.setAutor(autor);
-            repositorio.save(libro);
-            System.out.println(libro);
-        } else {
-            System.out.println("No se encontró ningún libro.");
+        if (datos == null) {
+            return;
         }
+        DatosAutor datosAutor = datos.autorList().get(0);
+        Optional<Autor> autorExistente = repositorio.findAutorByNombre(datosAutor.nombre());
+        Autor autor;
+
+        if (autorExistente.isPresent()) {
+            autor = autorExistente.get();
+        } else {
+            repositorio.saveAutor(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento());
+            autor = repositorio.findAutorByDetails(datosAutor.nombre(), datosAutor.nacimiento(), datosAutor.fallecimiento()).get();
+        }
+        Libro libro = new Libro(datos);
+        libro.setAutor(autor);
+        repositorio.save(libro);
+        System.out.println(libro);
     }
 }
+

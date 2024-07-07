@@ -14,8 +14,14 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
     @Query("SELECT a FROM Autor a WHERE a.nombre = :nombre")
     Optional<Autor> findAutorByNombre(@Param("nombre") String nombre);
 
+    @Query("SELECT l FROM Libro l WHERE l.title = :title")
+    Optional<Libro> findLibroByTitle(@Param("title") String title);
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO autores (nombre, nacimiento, fallecimiento) VALUES (:nombre, :nacimiento, :fallecimiento)", nativeQuery = true)
-    void saveAutor(@Param("nombre") String nombre, @Param("nacimiento") int nacimiento, @Param("fallecimiento") int fallecimiento);
+    int saveAutor(@Param("nombre") String nombre, @Param("nacimiento") int nacimiento, @Param("fallecimiento") int fallecimiento);
+
+    @Query("SELECT a FROM Autor a WHERE a.nombre = :nombre AND a.nacimiento = :nacimiento AND a.fallecimiento = :fallecimiento")
+    Optional<Autor> findAutorByDetails(@Param("nombre") String nombre, @Param("nacimiento") int nacimiento, @Param("fallecimiento") int fallecimiento);
 }
