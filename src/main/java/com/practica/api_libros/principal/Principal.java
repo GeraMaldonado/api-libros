@@ -59,6 +59,9 @@ public class Principal {
                 case 3:
                     listarAutoresRegistrados();
                     break;
+                case 4:
+                    autoresVivosAntesDeFecha();
+                    break;
 
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -117,6 +120,13 @@ public class Principal {
     public void listarAutoresRegistrados(){
         autores = autorRepositorio.findAllWithLibros();
         autores.forEach(System.out::println);
+    }
+    public void autoresVivosAntesDeFecha(){
+        System.out.println("Ingrese el año: ");
+        var fecha = escaner.nextInt();
+        autores = autorRepositorio.findAllByDate(fecha);
+        autores.forEach(System.out::println);
+
     }
 }
 
