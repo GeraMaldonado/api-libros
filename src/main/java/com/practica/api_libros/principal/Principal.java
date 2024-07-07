@@ -22,6 +22,7 @@ public class Principal {
     private ConvierteDatos conversor = new ConvierteDatos();
     private LibroRepository repositorio;
     private List<Libro> libros;
+    private List<Autor> autores;
 
     public Principal(LibroRepository repository) {
         this.repositorio = repository;
@@ -51,6 +52,9 @@ public class Principal {
                     break;
                 case 2:
                     listarLibrosRegistrados();
+                    break;
+                case 3:
+                    listarAutoresRegistrados();
                     break;
 
                 case 0:
@@ -105,6 +109,11 @@ public class Principal {
     public void listarLibrosRegistrados(){
         libros = repositorio.findAll();
         libros.forEach(System.out::println);
+    }
+
+    public void listarAutoresRegistrados(){
+        autores = repositorio.llamarAutoresRegistrados();
+        autores.forEach(System.out::println);
     }
 }
 
