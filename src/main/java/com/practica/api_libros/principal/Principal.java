@@ -88,7 +88,7 @@ public class Principal {
                 return null;
             }
             return libro;
-        }catch (IndexOutOfBoundsException e){
+        } catch (IndexOutOfBoundsException e) {
             System.out.println("Libro no encontrado");
             return null;
         }
@@ -115,33 +115,49 @@ public class Principal {
         System.out.println(libro);
     }
 
-    public void listarLibrosRegistrados(){
+    public void listarLibrosRegistrados() {
         libros = librosRepositorio.findAll();
-        libros.forEach(System.out::println);
+        if (libros.isEmpty()) {
+            System.out.println("No se encontraron libros registrados.");
+        } else {
+            libros.forEach(System.out::println);
+        }
     }
 
-    public void listarAutoresRegistrados(){
+    public void listarAutoresRegistrados() {
         autores = autorRepositorio.findAllWithLibros();
-        autores.forEach(System.out::println);
+        if (autores.isEmpty()) {
+            System.out.println("No se encontraron autores registrados.");
+        } else {
+            autores.forEach(System.out::println);
+        }
     }
-    public void autoresVivosAntesDeFecha(){
+
+    public void autoresVivosAntesDeFecha() {
         System.out.println("Ingrese el año: ");
         var fecha = escaner.nextInt();
         autores = autorRepositorio.findAllByDate(fecha);
-        autores.forEach(System.out::println);
-
+        if (autores.isEmpty()) {
+            System.out.println("No se encontraron autores vivos en el año especificado.");
+        } else {
+            autores.forEach(System.out::println);
+        }
     }
-    public void listaDeLibrosPorIdioma(){
+
+    public void listaDeLibrosPorIdioma() {
         var idiomasTexto = """
                 es - Español
                 en - Inglés
                 fr - Francés
-                pt - Portugés
+                pt - Portugués
                 """;
-        System.out.println("Ingrese el idioma para buscar los libros: \n"+idiomasTexto);
+        System.out.println("Ingrese el idioma para buscar los libros: \n" + idiomasTexto);
         var idioma = escaner.nextLine();
         libros = librosRepositorio.librosPorIdioima(idioma);
-        libros.forEach(System.out::println);
+        if (libros.isEmpty()) {
+            System.out.println("No se encontraron libros en el idioma especificado.");
+        } else {
+            libros.forEach(System.out::println);
+        }
     }
 }
-
