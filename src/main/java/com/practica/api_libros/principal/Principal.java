@@ -10,6 +10,7 @@ import com.practica.api_libros.service.ConsumoAPI;
 import com.practica.api_libros.service.ConvierteDatos;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -20,6 +21,7 @@ public class Principal {
     private final String URL = "https://gutendex.com/books/?search=";
     private ConvierteDatos conversor = new ConvierteDatos();
     private LibroRepository repositorio;
+    private List<Libro> libros;
 
     public Principal(LibroRepository repository) {
         this.repositorio = repository;
@@ -44,6 +46,9 @@ public class Principal {
             switch (opcion) {
                 case 1:
                     buscarLibroWeb();
+                    break;
+                case 2:
+                    listarLibrosRegistrados();
                     break;
 
                 case 0:
@@ -93,6 +98,11 @@ public class Principal {
         libro.setAutor(autor);
         repositorio.save(libro);
         System.out.println(libro);
+    }
+
+    public void listarLibrosRegistrados(){
+        libros = repositorio.findAll();
+        libros.forEach(System.out::println);
     }
 }
 
