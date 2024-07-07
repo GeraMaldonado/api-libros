@@ -10,4 +10,7 @@ public interface AutorRepository extends JpaRepository<Autor, Long> {
 
     @Query("SELECT a FROM Autor a LEFT JOIN FETCH a.libros")
     List<Autor> findAllWithLibros();
+
+    @Query("SELECT a FROM Autor a LEFT JOIN FETCH a.libros WHERE fallecimiento < :fecha")
+    List<Autor> findAllByDate(int fecha);
 }
