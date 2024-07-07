@@ -1,6 +1,7 @@
 package com.practica.api_libros;
 
 import com.practica.api_libros.principal.Principal;
+import com.practica.api_libros.repository.AutorRepository;
 import com.practica.api_libros.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,14 +11,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ApiLibrosApplication implements CommandLineRunner {
 	@Autowired
-	private LibroRepository repository;
+	private LibroRepository libroRepository;
+	@Autowired
+	private AutorRepository autorRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(ApiLibrosApplication.class, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		Principal principal = new Principal(repository);
+		Principal principal = new Principal(libroRepository, autorRepository);
 		principal.muestraMenu();
 	}
 }
