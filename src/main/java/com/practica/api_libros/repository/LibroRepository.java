@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface LibroRepository extends JpaRepository<Libro, Long> {
@@ -24,4 +26,7 @@ public interface LibroRepository extends JpaRepository<Libro, Long> {
 
     @Query("SELECT a FROM Autor a WHERE a.nombre = :nombre AND a.nacimiento = :nacimiento AND a.fallecimiento = :fallecimiento")
     Optional<Autor> findAutorByDetails(@Param("nombre") String nombre, @Param("nacimiento") int nacimiento, @Param("fallecimiento") int fallecimiento);
+
+    @Query("Select a FROM Autor a")
+    List<Autor> llamarAutoresRegistrados();
 }
