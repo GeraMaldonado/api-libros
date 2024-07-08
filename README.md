@@ -11,7 +11,7 @@ _Estas instrucciones te permitirán obtener una copia del proyecto en funcionami
 
 _Que cosas necesitas para instalar el software y como instalarlas_
 
-- Java JDK 22
+- Java JDK 17
 - Maven 3.8.1 o superior
 - IntelliJ IDEA o cualquier IDE compatible con JAVA (Opcional)
 
