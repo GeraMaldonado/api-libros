@@ -17,24 +17,6 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 
 ### Instalación 🔧
 
-#### Terminal
-1. Clonar el repositorio
-  ```sh
-  git clone https://github.com/GeraMaldonado/api-libros.git
-  ```
-2. Dirigete a la carpeta api-conversor-monedas
-  ```sh
-  cd api-libros
-  ```
-3. Compila y construye el proyecto con Maven
-  ```sh
-  mvn clean install
-  ```
-4. Ejecuta la aplicaicón Spring
-  ```sh
-  mvn spring-boot:run
-  ```
-
 #### IntelliJ IDEA
 1. Clonar el repositorio
   ```sh
@@ -43,7 +25,8 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 2. Abre el proyecto en tu IDE.
 3. Configura el SDK de Java en tu IDE (asegúrate de tener instalado JDK 22).
 4. Espera a que Maven descargue todas las dependencias necesarias.
-5. Ejecuta la clase Principal para iniciar la aplicación.
+5. Crea las variables de entorno para la base de datos, (DB_USER, DB_NAME, DB_HOST y DB_PASSWORD).
+6. Ejecuta la clase Principal para iniciar la aplicación.
 
 
 ## Expresiones de Gratitud 🎁
