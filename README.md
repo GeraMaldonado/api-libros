@@ -13,6 +13,7 @@ _Que cosas necesitas para instalar el software y como instalarlas_
 
 - Java JDK 17
 - Maven 3.8.1 o superior
+- PostgreSQL 17
 - IntelliJ IDEA o cualquier IDE compatible con JAVA (Opcional)
 
 ### Instalación 🔧
